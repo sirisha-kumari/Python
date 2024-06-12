@@ -1,0 +1,77 @@
+
+"""
+toyato,mahendra,mercettes
+take the input from user for the car company name and the input message give the user option of three companies the user
+input company name goes input to / argument to model name function,which welcomes the user accordingly to the company name.
+the first function ask the user to enter the specific model name for that company.
+the second function whose name is varient according to the company name and car model the user should be ask to enter the varient
+you would like to choose from petrol,disel 
+the lastfunction display func according to the company, car model and car varient first its x showroom price displayed and then 
+on road price should be displayed which is calculated as x-showroom price+CGST+SGST+insurance.The SGST,CGST and insurance all 
+the have a common value throughout the carshowroom
+"""
+
+def get_company_name():
+    print("Welcome to the Car Showroom!")
+    print("Please select a car company:")
+    company_name = input("1. Toyota\n2. Mahindra\n3. Mercedes\nEnter the company name: ")
+    return company_name.lower()
+
+# Function to get car model name from user based on the company selected
+def get_model_name(company_name):
+    print(f"Welcome to {company_name.capitalize()} Showroom!")
+    model_name = input(f"Please enter the specific model name for {company_name.capitalize()}: ")
+    return model_name
+
+# Function to get car variant (petrol/diesel) based on the company and model selected
+def get_variant(company_name, model_name):
+    print(f"Welcome to {company_name.capitalize()} {model_name.capitalize()} Showroom!")
+    variant = input("Please choose the variant (Petrol/Diesel): ").lower()
+    return variant
+
+# Function to calculate on-road price based on ex-showroom price, tax, and insurance
+def calculate_on_road_price(exshowroom_price):
+    tax_percentage = 10  # Example value for tax percentage
+    cost_percentage = 5  # Example value for cost percentage
+    insurance_percentage = 3  # Example value for insurance percentage
+
+    tax = (tax_percentage / 100) * exshowroom_price
+    cost = (cost_percentage / 100) * exshowroom_price
+    insurance = (insurance_percentage / 100) * exshowroom_price
+
+    on_road_price = exshowroom_price + tax + cost + insurance
+    return on_road_price
+
+# Main function to execute the program
+def main():
+    company_name = get_company_name()
+
+    if company_name == 'toyota':
+        model_name = get_model_name(company_name)
+        variant = get_variant(company_name, model_name)
+        exshowroom_price = 1000000  # Example ex-showroom price for Toyota
+        on_road_price = calculate_on_road_price(exshowroom_price)
+        print(f"The ex-showroom price of {model_name.capitalize()} is: {exshowroom_price}")
+        print(f"The on-road price of {model_name.capitalize()} ({variant.capitalize()}) is: {on_road_price}")
+
+    elif company_name == 'mahindra':
+        model_name = get_model_name(company_name)
+        variant = get_variant(company_name, model_name)
+        exshowroom_price = 800000  # Example ex-showroom price for Mahindra
+        on_road_price = calculate_on_road_price(exshowroom_price)
+        print(f"The ex-showroom price of {model_name.capitalize()} is: {exshowroom_price}")
+        print(f"The on-road price of {model_name.capitalize()} ({variant.capitalize()}) is: {on_road_price}")
+
+    elif company_name == 'mercedes':
+        model_name = get_model_name(company_name)
+        variant = get_variant(company_name, model_name)
+        exshowroom_price = 1500000  # Example ex-showroom price for Mercedes
+        on_road_price = calculate_on_road_price(exshowroom_price)
+        print(f"The ex-showroom price of {model_name.capitalize()} is: {exshowroom_price}")
+        print(f"The on-road price of {model_name.capitalize()} ({variant.capitalize()}) is: {on_road_price}")
+
+    else:
+        print("Invalid company name. Please select from the provided options.")
+
+if __name__ == "__main__":
+    main()
