@@ -1,0 +1,139 @@
+
+"""
+Project
+Problem Statement:
+create an e-commerce project 
+    -where user can register with username and password and after login into website by checking the
+    username and password are correct if correct login successful otherwise invalid.
+    -he can displays what all the products are present that are phone,laptops,tvs,washing machines etc.
+    -The products contain name,price,category and stock left.
+    -From the products user can place an order just by the productname and the quality you want to purchased.
+    -Once he enters this a bill should be generated with the total amount and message written order placed and 
+     complete the payment on delivery.
+    -The change of stock should be reflected on the total product list.
+"""
+class User:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+class Product:
+    def __init__(self, name, price, category, stock_left):
+        self.name = name
+        self.price = price
+        self.category = category
+        self.stock_left = stock_left
+
+class ECommerceSystem:
+    def __init__(self):
+        self.users = {}
+        self.products = []
+        self.orders = []
+
+    def register_user(self, username, password):
+        if username not in self.users:
+            self.users[username] = User(username, password)
+            print("Registration successful.")
+        else:
+            print("Username already exists. Please choose a different username.")
+
+    def login_user(self, username, password):
+        if username in self.users and self.users[username].password == password:
+            print("Login successful.")
+            return True
+        else:
+            print("Invalid username or password.")
+            return False
+
+    def add_product(self, name, price, category, stock_left):
+        self.products.append(Product(name, price, category, stock_left))
+        print("Product added successfully.")
+
+    def display_products(self):
+        print("Available products:")
+        for i, product in enumerate(self.products):
+            print(f"{i+1}. Name: {product.name}, Price: {product.price}, Category: {product.category}, Stock Left: {product.stock_left}")
+
+    def place_order(self, username, product_index, quantity):
+        product = self.products[product_index - 1]
+        if product.stock_left >= quantity:
+            total_amount = product.price * quantity
+            self.orders.append((username, product.name, quantity, total_amount))
+            product.stock_left -= quantity
+            print("Order placed successfully.")
+            print(f"Total amount: {total_amount}")
+        else:
+            print("Insufficient stock.")
+
+    def generate_bill(self, username):
+        print("Your orders:")
+        total_bill = 0
+        for order in self.orders:
+            if order[0] == username:
+                print(f"Product: {order[1]}, Quantity: {order[2]}, Total Amount: {order[3]}")
+                total_bill += order[3]
+        print(f"Total Bill: {total_bill}")
+
+    def print_user_details(self, username):
+        if username in self.users:
+            print("User Details:")
+            print(f"Username: {self.users[username].username}")
+        else:
+            print("User not found.")
+
+
+# Main program
+ecommerce = ECommerceSystem()
+
+while True:
+    print("\n1. Register")
+    print("2. Login")
+    print("3. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        username = input("Enter username: ")
+        password = input("Enter password: ")
+        ecommerce.register_user(username, password)
+    elif choice == "2":
+        username = input("Enter username: ")
+        password = input("Enter password: ")
+        if ecommerce.login_user(username, password):
+            while True:
+                print("\n1. View Products")
+                print("2. Add Product")
+                print("3. Place Order")
+                print("4. Generate Bill")
+                print("5. Print User Details")
+                print("6. Logout")
+
+                option = input("Enter your option: ")
+
+                if option == "1":
+                    ecommerce.display_products()
+                elif option == "2":
+                    name = input("Enter product name: ")
+                    price = float(input("Enter product price: "))
+                    category = input("Enter product category: ")
+                    stock_left = int(input("Enter stock left: "))
+                    ecommerce.add_product(name, price, category, stock_left)
+                elif option == "3":
+                    ecommerce.display_products()
+                    product_index = int(input("Enter product number to order: "))
+                    quantity = int(input("Enter quantity: "))
+                    ecommerce.place_order(username, product_index, quantity)
+                elif option == "4":
+                    ecommerce.generate_bill(username)
+                elif option == "5":
+                    ecommerce.print_user_details(username)
+                elif option == "6":
+                    print("Logged out.")
+                    break
+                else:
+                    print("Invalid option.")
+    elif choice == "3":
+        print("Exiting the e-commerce system.")
+        break
+    else:
+        print("Invalid choice. Please try again.")
